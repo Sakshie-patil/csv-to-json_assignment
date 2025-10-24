@@ -6,7 +6,7 @@ It also provides an **age distribution report** for all users.
 
 ---
 
-## 🚀 Features
+## Features
 
 * Custom CSV parsing logic (no external CSV-to-JSON libraries)
 * Configurable file path via `.env`
@@ -17,46 +17,22 @@ It also provides an **age distribution report** for all users.
 
 ---
 
-## 🧩 Folder Structure
+##  Setup Instructions
 
-```
-csv-to-json-assignment/
-│
-├── data/
-│   └── users.csv
-│
-├── src/
-│   ├── index.js
-│   ├── csvParser.js
-│   ├── db.js
-│   ├── ageReport.js
-│   ├── config.js
-│   └── loader.js
-│
-├── schema.sql
-├── .env.example
-├── package.json
-└── README.md
-```
-
----
-
-## ⚙️ Setup Instructions
-
-### 1️⃣ Clone the repository
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/Sakshie-patil/csv-to-json_assignment.git
 cd csv-to-json_assignment
 ```
 
-### 2️⃣ Install dependencies
+### 2. Install dependencies
 
 ```bash
 npm install
 ```
 
-### 3️⃣ Create PostgreSQL database
+### 3. Create PostgreSQL database
 
 ```bash
 psql -U sakshi
@@ -65,7 +41,7 @@ CREATE DATABASE csv_json;
 \i schema.sql
 ```
 
-### 4️⃣ Configure environment
+### 4. Configure environment
 
 Create a `.env` file in the project root:
 
@@ -81,7 +57,7 @@ PORT=3000
 
 ---
 
-## ▶️ Run the Application
+## 5. Run the Application
 
 ```bash
 npm start
@@ -95,7 +71,7 @@ http://localhost:3000
 
 ---
 
-## 🧠 API Endpoints
+##  API Endpoints
 
 ### 🩺 Health Check
 
@@ -106,7 +82,7 @@ Response:
 { "status": "ok" }
 ```
 
-### 📤 Upload CSV and Insert into DB
+###  Upload CSV and Insert into DB
 
 **POST** `/upload-csv`
 Reads CSV from `CSV_FILE_PATH`, parses it, and inserts into DB.
@@ -118,7 +94,7 @@ Response:
 
 After upload, the app also logs the **Age Distribution Report** on the console.
 
-### 📊 Age Distribution Report
+###  Age Distribution Report
 
 **GET** `/age-distribution`
 Response:
@@ -159,22 +135,7 @@ CREATE TABLE public.users (
 
 ---
 
-## 🧾 Example Console Output
-
-```
-Server running on port 3000
-PostgreSQL pool connected
-CSV upload complete: 4 records inserted
-Age Distribution Report:
-<20: 23.08%
-20-40: 53.85%
-40-60: 23.08%
->60: 0.00%
-```
-
----
-
-## 📘 Assumptions
+##  Assumptions
 
 * The first line of CSV is always headers.
 * CSV files may contain nested properties using dot notation.
@@ -183,8 +144,3 @@ Age Distribution Report:
 
 ---
 
-## 🧑‍💻 Author
-
-**Sakshi Patil**
-Node.js | Express | PostgreSQL | Backend Developer Intern
-[GitHub Profile](https://github.com/Sakshie-patil)

@@ -1,33 +1,39 @@
+// src/csvParser.js
 const fs = require('fs');
+const readline = require('readline');
 
 function parseCSV(filePath) {
-    if (!fs.existsSync(filePath)) {
-        throw new Error(`CSV file not found: ${filePath}`);
-    }
+  return new Promise((resolve, reject) => {
+    const data = [];
+    const stream = fs.createReadStream(filePath);
+    const rl = readline.createInterface({ input: stream });
 
-    const content = fs.readFileSync(filePath, 'utf8').trim();
-    const lines = content.split('\n');
-    const headers = lines[0].split(',');
+    let headers = [];
 
-    const data = lines.slice(1).map(line => {
-        const values = line.split(',');
-        const obj = {};
-        headers.forEach((header, idx) => {
-            const keys = header.split('.');
-            let current = obj;
-            keys.forEach((key, i) => {
-                if (i === keys.length - 1) {
-                    current[key] = values[idx];
-                } else {
-                    current[key] = current[key] || {};
-                    current = current[key];
-                }
-            });
+    rl.on('line', line => {
+      if (headers.length === 0) {
+        headers = line.split(',').map(h => h.trim());
+      } else {
+        const values = line.split(',').map(v => v.trim());
+        const record = {};
+
+        headers.forEach((header, i) => {
+          const keys = header.split('.');
+          let current = record;
+          keys.forEach((key, idx) => {
+            if (idx === keys.length - 1) current[key] = values[i];
+            else current[key] = current[key] || {};
+            current = current[key];
+          });
         });
-        return obj;
+
+        data.push(record);
+      }
     });
 
-    return data;
+    rl.on('close', () => resolve(data));
+    rl.on('error', err => reject(err));
+  });
 }
 
 module.exports = parseCSV;

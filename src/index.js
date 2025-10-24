@@ -41,7 +41,12 @@ async function insertData(data) {
 // API: Upload CSV & insert into DB (POST)
 app.post('/upload-csv', async (req, res) => {
   try {
-    const data = parseCSV(CSV_FILE_PATH); // if parseCSV is async, use: await parseCSV(CSV_FILE_PATH)
+    const data = await parseCSV(CSV_FILE_PATH); // <-- await the Promise
+
+    if (!data || !Array.isArray(data)) {
+  return res.status(400).json({ success: false, message: 'CSV parsing failed or file empty' });
+}
+
     await insertData(data);
     res.json({ success: true, message: `${data.length} records inserted` });
   } catch (err) {
@@ -70,6 +75,8 @@ app.get('/age-distribution', async (req, res) => {
       distribution[group] = ((ageGroups[group] / total) * 100).toFixed(2) + '%';
     }
 
+    console.log('Age distribution:', distribution);
+    
     res.json(distribution);
   } catch (err) {
     console.error(err);
